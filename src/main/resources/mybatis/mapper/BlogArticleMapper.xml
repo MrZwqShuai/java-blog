@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ngblog.mapper.ArticleDao">
+    <!--查询用户所有文章列表-->
+    <select id="getArticleByUser" parameterType="int" resultType="java.util.HashMap">
+        select article.*, from_unixtime(create_date,'%Y-%m-%d'), tag.name from article, tag, tag_relationship where uid=#{uid} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
+    </select>
+
+    <!--查询用户发标文章总数-->
+    <select id="getArticleTotalByUser" parameterType="int" resultType="int">
+        select count(article_id) from article where uid=#{uid}
+    </select>
+
+    <!--通过文章id查询一片文章-->
+    <select id="getOneArticleById" parameterType="int" resultType="map">
+        select article.uid, article.author, article.title, article.content, article.create_date, article.follow_num, article.page_view, tag.name from article, tag, tag_relationship where article.article_id=#{article_id} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
+    </select>
+
+    <!--增加文章的浏览量-->
+    <select id="addPageView">
+        update article set page_view=page_view+1 where article_id=#{article_id}
+    </select>
+
+    <!-- 查询所有标签 -->
+    <select id="getAllMeta" resultType="java.util.HashMap">
+        SELECT * FROM tag
+    </select>
+
+    <!--保存一篇文章-->
+    <select id="postOneArticleByUser" resultType="java.util.Map">
+        INSERT INTO article (uid, author, title, content, create_date) VALUES (1, "江流儿", #{title}, #{content}, #{create_date})
+    </select>
+
+    <!--文章爬虫-->
+    <select id="crawlerArticle" parameterType="java.util.Map">
+        INSERT INTO article (uid, author, title, content, create_date) VALUES (1, "江流儿", "标题", #{content}, #{create_date})
+    </select>
+
+    <select id="postMeta" parameterType="java.util.Map">
+        INSERT INTO tag_relationship (article_id, tag_id) VALUES (#{article_id}, #{tag_id})
+    </select>
+
+    <!--标签对应的所有文章-->
+    <select id="getArticleByMeta" parameterType="int" resultType="java.util.Map">
+        SELECT article.* from article,tag_relationship WHERE tag_id=#{tag_id} AND tag_relationship.article_id=article.article_id
+    </select>
+</mapper>
