@@ -2,6 +2,8 @@ package com.example.ngblog.service;
 
 import com.example.ngblog.entity.Article;
 import com.example.ngblog.entity.Meta;
+import com.example.ngblog.entity.Result;
+import com.example.ngblog.util.ResultUtil;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,5 +44,5 @@ public interface ArticleService {
     void postOneArticleByUser(Map<String, Object> article);
 
     //上传图片
-    Map<String, Object> uploadArticleImg(MultipartFile file, HttpServletRequest request);
+    Result uploadArticleImg(MultipartFile file, HttpServletRequest request);
 }

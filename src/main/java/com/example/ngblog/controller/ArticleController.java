@@ -96,8 +96,7 @@ public class ArticleController {
     //上传图片
     @RequestMapping(value = "/article/img/add", method = RequestMethod.POST)
     public Result uploadArticleImg(MultipartFile file, HttpServletRequest request) {
-        Map<String,Object> filePath = articleService.uploadArticleImg(file, request);
-        return ResultUtil.success(filePath);
+         return articleService.uploadArticleImg(file, request);
     }
 
 

@@ -2,6 +2,7 @@ package com.example.ngblog.service;
 
 import com.example.ngblog.entity.Article;
 import com.example.ngblog.entity.Meta;
+import com.example.ngblog.entity.Result;
 import com.example.ngblog.mapper.ArticleDao;
 import com.example.ngblog.util.CrawlerUtil;
 import com.example.ngblog.util.ResultUtil;
@@ -89,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService{
 
     int i = 0;
     //上传图片
-    public Map<String, Object> uploadArticleImg(MultipartFile file, HttpServletRequest request) {
+    public Result uploadArticleImg(MultipartFile file, HttpServletRequest request) {
         Map<String, Object> finFilePath = new HashMap<String, Object>();
         if(file != null) {
             long startTime = System.currentTimeMillis();
@@ -102,7 +103,7 @@ public class ArticleServiceImpl implements ArticleService{
             String webapp = request.getSession().getServletContext().getRealPath("/upload");
             System.out.println("上传文件保存服务器的路径:" + webapp);
 
-            File deskFile = new File(webapp, i++ + filename);
+            File deskFile = new File("E://angular大项目//myNgBlog/src/assets/upload", i++ + filename);
             System.out.println("上传文件方的最终路径: " + deskFile.getAbsolutePath());
             finFilePath.put("url", deskFile.getAbsolutePath());
 
@@ -119,9 +120,9 @@ public class ArticleServiceImpl implements ArticleService{
                 output.close();
             } catch (Exception e) {
                 finFilePath.put("data", null);
-                return finFilePath;
+                return ResultUtil.error(-1, e.getMessage());
             }
         }
-        return finFilePath;
+        return ResultUtil.success(finFilePath);
     }
 }
