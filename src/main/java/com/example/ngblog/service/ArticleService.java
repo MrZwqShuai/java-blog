@@ -2,7 +2,10 @@ package com.example.ngblog.service;
 
 import com.example.ngblog.entity.Article;
 import com.example.ngblog.entity.Meta;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -37,4 +40,7 @@ public interface ArticleService {
 
     //为用户增加一片文章
     void postOneArticleByUser(Map<String, Object> article);
+
+    //上传图片
+    Map<String, Object> uploadArticleImg(MultipartFile file, HttpServletRequest request);
 }

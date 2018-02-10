@@ -11,7 +11,10 @@ import jdk.nashorn.internal.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +82,6 @@ public class ArticleController {
     @RequestMapping(value = "/article/add", method = RequestMethod.POST)
     public Result postOneArticleByUser(@RequestBody String body) {
 
-        //System.out.println("参数" + body);
         Map<String, Object> m1 = (Map<String, Object>) JSON.parse(body);
         Map<String, Object> postBody = new HashMap<String, Object>();
         for (String s: m1.keySet()) {
@@ -89,6 +91,13 @@ public class ArticleController {
         System.out.println(postBody);
         articleService.postOneArticleByUser(postBody);
         return ResultUtil.success(null);
+    }
+
+    //上传图片
+    @RequestMapping(value = "/article/img/add", method = RequestMethod.POST)
+    public Result uploadArticleImg(MultipartFile file, HttpServletRequest request) {
+        Map<String,Object> filePath = articleService.uploadArticleImg(file, request);
+        return ResultUtil.success(filePath);
     }
 
 

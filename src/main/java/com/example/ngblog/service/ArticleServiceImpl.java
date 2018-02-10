@@ -5,10 +5,17 @@ import com.example.ngblog.entity.Meta;
 import com.example.ngblog.mapper.ArticleDao;
 import com.example.ngblog.util.CrawlerUtil;
 import com.example.ngblog.util.ResultUtil;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -78,5 +85,43 @@ public class ArticleServiceImpl implements ArticleService{
     public void postOneArticleByUser(Map<String, Object> article) {
         article.put("create_date", new Timestamp(System.currentTimeMillis()));
         articleDao.postOneArticleByUser(article);
+    }
+
+    int i = 0;
+    //上传图片
+    public Map<String, Object> uploadArticleImg(MultipartFile file, HttpServletRequest request) {
+        Map<String, Object> finFilePath = new HashMap<String, Object>();
+        if(file != null) {
+            long startTime = System.currentTimeMillis();
+            String filename = file.getOriginalFilename();
+//            System.out.println("上传文件的名称:" + filename);
+            System.out.println("上传文件的大小:" + file.getSize());
+            if(file.getSize() > 1024) {
+            }
+//            System.out.println("上传文件的后缀名:" + FilenameUtils.getExtension(filename));
+            String webapp = request.getSession().getServletContext().getRealPath("/upload");
+            System.out.println("上传文件保存服务器的路径:" + webapp);
+
+            File deskFile = new File(webapp, i++ + filename);
+            System.out.println("上传文件方的最终路径: " + deskFile.getAbsolutePath());
+            finFilePath.put("url", deskFile.getAbsolutePath());
+
+            File parentFile = deskFile.getParentFile();
+            if( !parentFile.exists() ) {
+                parentFile.mkdirs();
+            }
+
+            try {
+                InputStream inputStream = file.getInputStream();
+                FileOutputStream output = new FileOutputStream(deskFile);
+                IOUtils.copy(inputStream, output);
+                inputStream.close();
+                output.close();
+            } catch (Exception e) {
+                finFilePath.put("data", null);
+                return finFilePath;
+            }
+        }
+        return finFilePath;
     }
 }
