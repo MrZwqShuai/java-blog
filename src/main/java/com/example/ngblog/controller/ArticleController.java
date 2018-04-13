@@ -81,7 +81,6 @@ public class ArticleController {
     //用户添加一篇文章
     @RequestMapping(value = "/article/add", method = RequestMethod.POST)
     public Result postOneArticleByUser(@RequestBody String body) {
-
         Map<String, Object> m1 = (Map<String, Object>) JSON.parse(body);
         Map<String, Object> postBody = new HashMap<String, Object>();
         for (String s: m1.keySet()) {

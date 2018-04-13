@@ -23,4 +23,9 @@ public class UserController {
     public Result getUserInfo(@PathVariable String username) {
         return ResultUtil.success(userDao.getUserInfo(username));
     }
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index() {
+        return "hellow world";
+    }
 }

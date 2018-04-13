@@ -31,5 +31,5 @@ public interface ArticleDao {
 
     public void postMeta(Map<String, Object> target);
 
-    public void postOneArticleByUser(Map<String, Object> article);
+    public Integer postOneArticleByUser(Map<String, Object> article);
 }

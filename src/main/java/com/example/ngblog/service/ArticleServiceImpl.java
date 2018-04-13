@@ -85,7 +85,10 @@ public class ArticleServiceImpl implements ArticleService{
     //为用户增加一片文章
     public void postOneArticleByUser(Map<String, Object> article) {
         article.put("create_date", new Timestamp(System.currentTimeMillis()));
-        articleDao.postOneArticleByUser(article);
+        System.out.println(article);
+        Integer id = articleDao.postOneArticleByUser(article);
+        System.out.println(id + "000000");
+        System.out.println(article.get("uid"));
     }
 
     int i = 0;
@@ -103,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService{
             String webapp = request.getSession().getServletContext().getRealPath("/upload");
             System.out.println("上传文件保存服务器的路径:" + webapp);
 
-            File deskFile = new File("E://angular大项目//myNgBlog/src/assets/upload", i++ + filename);
+            File deskFile = new File("C://ngblog//article", i++ + filename);
             System.out.println("上传文件方的最终路径: " + deskFile.getAbsolutePath());
             finFilePath.put("url", deskFile.getAbsolutePath());
 
