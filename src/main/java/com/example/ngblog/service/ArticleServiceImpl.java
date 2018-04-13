@@ -3,6 +3,7 @@ package com.example.ngblog.service;
 import com.example.ngblog.entity.Article;
 import com.example.ngblog.entity.Meta;
 import com.example.ngblog.entity.Result;
+import com.example.ngblog.entity.TagRelationShip;
 import com.example.ngblog.mapper.ArticleDao;
 import com.example.ngblog.util.CrawlerUtil;
 import com.example.ngblog.util.ResultUtil;
@@ -30,8 +31,8 @@ public class ArticleServiceImpl implements ArticleService{
     @Autowired
     private ArticleDao articleDao;
 
-    public List<Map<String, Object>> getArticleByUser(Integer uid) {
-        return articleDao.getArticleByUser(uid);
+    public List<Map<String, Object>> getArticleByUser(Integer uid, Integer createDateSort) {
+        return articleDao.getArticleByUser(uid, createDateSort);
     }
 
     public Integer getArticleTotalByUser(Integer id) {
@@ -83,12 +84,25 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     //为用户增加一片文章
-    public void postOneArticleByUser(Map<String, Object> article) {
-        article.put("create_date", new Timestamp(System.currentTimeMillis()));
-        System.out.println(article);
+    public void postOneArticleByUser(Map<String, Object> articleMap) {
+        System.out.println(articleMap);
+        Article article = new Article();
+        article.setTitle((String) articleMap.get("title"));
+        article.setContent((String) articleMap.get("content"));
+        article.setCreate_date(new Timestamp(System.currentTimeMillis()));
         Integer id = articleDao.postOneArticleByUser(article);
-        System.out.println(id + "000000");
-        System.out.println(article.get("uid"));
+        System.out.println(article.getArticle_id() + "-----");
+        this.saveTagForArticle(article.getArticle_id(), (Integer) articleMap.get("tagId"));
+    }
+
+    /**
+     * 新增文章保存匹配的标签
+     */
+    public void saveTagForArticle(Integer article_id, Integer tag_id) {
+        TagRelationShip tagRelationShip = new TagRelationShip();
+        tagRelationShip.setArticle_id(article_id);
+        tagRelationShip.setTag_id(tag_id);
+        articleDao.postMetaForArticle(tagRelationShip);
     }
 
     int i = 0;

@@ -5,7 +5,12 @@
 <mapper namespace="com.example.ngblog.mapper.ArticleDao">
     <!--查询用户所有文章列表-->
     <select id="getArticleByUser" parameterType="int" resultType="java.util.HashMap">
-        select article.*, from_unixtime(create_date,'%Y-%m-%d'), tag.name from article, tag, tag_relationship where uid=#{uid} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
+        select article.*, from_unixtime(create_date,'%Y-%m-%d'), tag.name, tag.id from article, tag, tag_relationship where uid=#{uid} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
+        <choose>
+            <when test="createDateSort == 2">
+                ORDER BY create_date ASC
+            </when>
+        </choose>
     </select>
 
     <!--查询用户发标文章总数-->
@@ -29,20 +34,20 @@
     </select>
 
     <!--保存一篇文章-->
-    <insert id="postOneArticleByUser">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+    <insert id="postOneArticleByUser" parameterType="com.example.ngblog.entity.Article">
+        <selectKey resultType="java.lang.Integer" keyProperty="article_id" order="AFTER">
         SELECT @@IDENTITY as id
         </selectKey>
         INSERT INTO article (uid, author, title, content, create_date) VALUES (1, "江流儿", #{title}, #{content}, #{create_date})
     </insert>
 
     <!--保存文章对应的标签-->
-    <select id="postMetaForArticle">
+    <select id="postMetaForArticle" parameterType="com.example.ngblog.entity.TagRelationShip">
         INSERT INTO tag_relationship (article_id, tag_id) VALUES (#{article_id}, #{tag_id})
     </select>
     <!--文章爬虫-->
     <select id="crawlerArticle" parameterType="java.util.Map">
-        INSERT INTO article (uid, autm hor, title, content, create_date) VALUES (1, "江流儿", "标题", #{content}, #{create_date})
+        INSERT INTO article (uid, author, title, content, create_date) VALUES (1, "江流儿", "标题", #{content}, #{create_date})
     </select>
 
     <select id="postMeta" parameterType="java.util.Map">

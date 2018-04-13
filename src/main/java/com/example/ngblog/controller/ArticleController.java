@@ -31,11 +31,12 @@ public class ArticleController {
     @Autowired
     public ArticleService articleService;
 
-    //根据用户查询所有文章
-    @RequestMapping(value = "/article/author/{uid}", method = RequestMethod.GET)
-    public Result getArticleByUser(@PathVariable Integer uid) {
 
-        List<Map<String,Object>> list = articleService.getArticleByUser(uid);
+    //根据用户查询所有文章
+    @RequestMapping(value = "/article/author", method = RequestMethod.GET)
+    public Result getArticleByUser(Integer uid, Integer createDateSort) {
+
+        List<Map<String,Object>> list = articleService.getArticleByUser(uid, createDateSort);
         return ResultUtil.success(list);
     }
 
@@ -82,13 +83,8 @@ public class ArticleController {
     @RequestMapping(value = "/article/add", method = RequestMethod.POST)
     public Result postOneArticleByUser(@RequestBody String body) {
         Map<String, Object> m1 = (Map<String, Object>) JSON.parse(body);
-        Map<String, Object> postBody = new HashMap<String, Object>();
-        for (String s: m1.keySet()) {
-            System.out.println(s + "==>" + m1.get(s));
-            postBody.put(s,m1.get(s));
-        }
-        System.out.println(postBody);
-        articleService.postOneArticleByUser(postBody);
+        System.out.println( m1.get("title") + "postBody");
+        articleService.postOneArticleByUser(m1);
         return ResultUtil.success(null);
     }
 

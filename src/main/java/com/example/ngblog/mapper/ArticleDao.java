@@ -2,10 +2,12 @@ package com.example.ngblog.mapper;
 
 import com.example.ngblog.entity.Article;
 import com.example.ngblog.entity.Meta;
+import com.example.ngblog.entity.TagRelationShip;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  */
 @Mapper
 public interface ArticleDao {
-    public List<Map<String, Object>> getArticleByUser(Integer uid);
+    public List<Map<String, Object>> getArticleByUser(@Param("uid") Integer uid, @Param("createDateSort") Integer createDateSort);
 
     public Integer getArticleTotalByUser(Integer uid);
 
@@ -31,5 +33,6 @@ public interface ArticleDao {
 
     public void postMeta(Map<String, Object> target);
 
-    public Integer postOneArticleByUser(Map<String, Object> article);
+    public Integer postOneArticleByUser(Article article);
+    public void postMetaForArticle(TagRelationShip tagRelationShip);
 }

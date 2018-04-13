@@ -19,7 +19,7 @@ import java.util.Map;
 public interface ArticleService {
 
     //查询用户所有文章列表
-    List<Map<String, Object>> getArticleByUser(Integer uid);
+    List<Map<String, Object>> getArticleByUser(Integer uid, Integer createDateSort);
 
     //查询用户文章总数
     Integer getArticleTotalByUser(Integer id);

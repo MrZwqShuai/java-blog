@@ -8,11 +8,21 @@ import java.util.Date;
  */
 public class Article {
 
+    private Integer article_id;
+
+    public Integer getArticle_id() {
+        return article_id;
+    }
+
+    public void setArticle_id(Integer article_id) {
+        this.article_id = article_id;
+    }
+
     private Integer uid;
     private String author;
     private String title;
     private String content;
-    private Date createDate;
+    private Date create_date;
     private Integer followNum;
     private Integer viewNum;
 
@@ -48,12 +58,12 @@ public class Article {
         this.content = content;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreate_date() {
+        return create_date;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreate_date(Date create_date) {
+        this.create_date = create_date;
     }
 
     public Integer getFollowNum() {
