@@ -8,7 +8,7 @@
         select article.*, from_unixtime(create_date,'%Y-%m-%d'), tag.name, tag.id from article, tag, tag_relationship where uid=#{uid} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
         <choose>
             <when test="createDateSort == 2">
-                ORDER BY create_date ASC
+                ORDER BY create_date DESC
             </when>
         </choose>
     </select>
@@ -21,6 +21,11 @@
     <!--通过文章id查询一片文章-->
     <select id="getOneArticleById" parameterType="int" resultType="map">
         select article.uid, article.author, article.title, article.content, article.create_date, article.follow_num, article.page_view, tag.name from article, tag, tag_relationship where article.article_id=#{article_id} AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
+    </select>
+
+    <!--通过搜索关键字查找所有文章-->
+    <select id="getArticleListByKeywords" parameterType="string" resultType="java.util.HashMap">
+        select article.*, from_unixtime(create_date,'%Y-%m-%d'), tag.name, tag.id from article, tag, tag_relationship WHERE  content LIKE '%${keywords}%'AND article.article_id=tag_relationship.article_id AND tag_relationship.tag_id=tag.id
     </select>
 
     <!--增加文章的浏览量-->

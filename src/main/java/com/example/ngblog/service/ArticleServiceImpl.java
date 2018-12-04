@@ -35,6 +35,17 @@ public class ArticleServiceImpl implements ArticleService{
         return articleDao.getArticleByUser(uid, createDateSort);
     }
 
+    /**
+     * 关键字模糊查找文章
+     */
+    public Result getArticleListByKeywords(String keywords) {
+        List<Map<String, Object>> list = articleDao.getArticleListByKeywords(keywords);
+        Map<String, List> articleSearchListMap = new HashMap<String, List>();
+        articleSearchListMap.put("articles", list);
+        System.out.println(list + "list");
+        return ResultUtil.success(articleSearchListMap);
+    }
+
     public Integer getArticleTotalByUser(Integer id) {
         return articleDao.getArticleTotalByUser(id);
     }
@@ -120,9 +131,9 @@ public class ArticleServiceImpl implements ArticleService{
             String webapp = request.getSession().getServletContext().getRealPath("/upload");
             System.out.println("上传文件保存服务器的路径:" + webapp);
 
-            File deskFile = new File("C://ngblog//article", i++ + filename);
+            File deskFile = new File("C://www//myDemo//uploads//blog", filename);
             System.out.println("上传文件方的最终路径: " + deskFile.getAbsolutePath());
-            finFilePath.put("url", deskFile.getAbsolutePath());
+            finFilePath.put("url", "http://47.98.137.213/uploads/blog/" + filename);
 
             File parentFile = deskFile.getParentFile();
             if( !parentFile.exists() ) {
@@ -142,4 +153,6 @@ public class ArticleServiceImpl implements ArticleService{
         }
         return ResultUtil.success(finFilePath);
     }
+
+
 }

@@ -34,5 +34,8 @@ public interface ArticleDao {
     public void postMeta(Map<String, Object> target);
 
     public Integer postOneArticleByUser(Article article);
+
     public void postMetaForArticle(TagRelationShip tagRelationShip);
+
+    public List<Map<String, Object>> getArticleListByKeywords(@Param("keywords") String keywords);
 }

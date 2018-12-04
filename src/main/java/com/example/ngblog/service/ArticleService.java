@@ -45,4 +45,7 @@ public interface ArticleService {
 
     //上传图片
     Result uploadArticleImg(MultipartFile file, HttpServletRequest request);
+
+    //通过关键字模糊查找文章
+    Result getArticleListByKeywords(String keywords);
 }

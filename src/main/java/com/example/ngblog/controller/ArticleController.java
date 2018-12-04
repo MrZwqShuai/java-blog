@@ -94,5 +94,18 @@ public class ArticleController {
          return articleService.uploadArticleImg(file, request);
     }
 
+    //关键字模糊查找文章
+    @RequestMapping(value = "/article/search", method = RequestMethod.GET)
+    public Result getArticleByKeywords(String keywords) {
+        return articleService.getArticleListByKeywords(keywords);
+    }
+
+    //关键字模糊查找文章
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public Result getArticleByKeyword(String keywords) {
+        return articleService.getArticleListByKeywords(keywords);
+    }
+
+
 
 }
